@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+.vite/
+.direnv/
+*.tsbuildinfo
+.DS_Store
+bingo.db
+bingo.db-shm
+bingo.db-wal

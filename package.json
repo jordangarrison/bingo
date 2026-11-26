@@ -1,0 +1,43 @@
+{
+  "name": "thanksgiving-bingo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server/standalone.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint --config oxlint.config.mjs --deny-warnings --report-unused-disable-directives-severity=error src test",
+    "format": "oxfmt --config oxfmt.config.mjs --check src test",
+    "format:fix": "oxfmt --config oxfmt.config.mjs src test",
+    "scan": "ast-grep scan src test",
+    "test": "vitest run",
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run format && pnpm run scan && pnpm run test"
+  },
+  "dependencies": {
+    "@effect/platform-browser": "4.1.0",
+    "effect": "4.1.0",
+    "foldkit": "0.171.0"
+  },
+  "devDependencies": {
+    "@ast-grep/cli": "0.42.3",
+    "@cloudflare/oxlint-config": "0.1.0",
+    "@effect/tsgo": "0.70.0",
+    "@foldkit/vite-plugin": "0.29.1",
+    "@tailwindcss/vite": "4.3.3",
+    "happy-dom": "20.14.5",
+    "oxfmt": "0.62.0",
+    "oxlint": "1.94.0",
+    "tailwindcss": "4.3.3",
+    "tsrs": "0.25.0-ts7.1.0-beta",
+    "typescript": "7.0.2",
+    "ultracite": "8.2.1",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}

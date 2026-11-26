@@ -1,0 +1,12 @@
+id: no-else-after-return
+language: tsx
+severity: error
+message: Avoid else after return; keep control flow flat.
+rule:
+  pattern: |
+    if ($COND) {
+      $$$BODY
+      return $$$RET
+    } else {
+      $$$ELSE
+    }

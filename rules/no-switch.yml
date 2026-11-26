@@ -1,0 +1,6 @@
+id: no-switch
+language: tsx
+severity: error
+message: Use Match or Message.match instead of switch statements.
+rule:
+  kind: switch_statement

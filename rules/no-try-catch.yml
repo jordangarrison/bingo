@@ -1,0 +1,6 @@
+id: no-try-catch
+language: tsx
+severity: error
+message: Use Effect.try / Effect error handling instead of try/catch.
+rule:
+  kind: try_statement
