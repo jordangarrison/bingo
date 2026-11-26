@@ -22,6 +22,7 @@ stdenv.mkDerivation (finalAttrs: {
       !(
         baseName == "node_modules"
         || baseName == "dist"
+        || baseName == "dist-server"
         || baseName == ".direnv"
         || baseName == ".git"
         || baseName == "result"
@@ -33,7 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 4;
-    hash = "sha256-MiUTt9EhCEEN/KgRRm9s7MAEYThTpmvQZ0nnzUMU2hg=";
+    hash = "sha256-2E5PKcYafoqV4evTgM7C+WmrZ/7xGCfqohbSI8FV/d0=";
   };
 
   nativeBuildInputs = [
@@ -54,10 +55,10 @@ stdenv.mkDerivation (finalAttrs: {
 
     mkdir -p $out/share/bingo $out/bin
     cp -r dist $out/share/bingo/dist
-    cp -r server $out/share/bingo/server
+    cp -r dist-server $out/share/bingo/dist-server
 
     makeWrapper ${nodejs_24}/bin/node $out/bin/bingo-server \
-      --add-flags "$out/share/bingo/server/standalone.mjs" \
+      --add-flags "$out/share/bingo/dist-server/main.js" \
       --set-default BINGO_DIST_DIR "$out/share/bingo/dist"
 
     runHook postInstall

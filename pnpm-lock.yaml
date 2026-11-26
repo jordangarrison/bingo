@@ -11,6 +11,9 @@ importers:
       '@effect/platform-browser':
         specifier: 4.1.0
         version: 4.1.0(effect@4.1.0)
+      '@effect/platform-node':
+        specifier: 4.1.0
+        version: 4.1.0(effect@4.1.0)(redis@6.4.0)
       effect:
         specifier: 4.1.0
         version: 4.1.0
@@ -29,10 +32,13 @@ importers:
         version: 0.70.0
       '@foldkit/vite-plugin':
         specifier: 0.29.1
-        version: 0.29.1(effect@4.1.0)(foldkit@0.171.0(@effect/platform-browser@4.1.0(effect@4.1.0))(effect@4.1.0))(redis@6.4.0)(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))
+        version: 0.29.1(effect@4.1.0)(foldkit@0.171.0(@effect/platform-browser@4.1.0(effect@4.1.0))(effect@4.1.0))(redis@6.4.0)(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))
       '@tailwindcss/vite':
         specifier: 4.3.3
-        version: 4.3.3(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))
+        version: 4.3.3(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))
+      '@types/node':
+        specifier: 24.10.1
+        version: 24.10.1
       happy-dom:
         specifier: 20.14.5
         version: 20.14.5
@@ -56,10 +62,10 @@ importers:
         version: 8.2.1(eslint@10.15.0(jiti@2.7.0))(oxfmt@0.62.0)(oxlint@1.94.0)
       vite:
         specifier: 8.3.1
-        version: 8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)
+        version: 8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 5.0.2
-        version: 5.0.2(@types/node@26.6.10)(happy-dom@20.14.5)(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.2(@types/node@24.10.1)(happy-dom@20.14.5)(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))
 
 packages:
 
@@ -160,6 +166,13 @@ packages:
     engines: {node: '>=22.19.0'}
     peerDependencies:
       effect: ^4.1.5
+
+  '@effect/platform-node@4.1.0':
+    resolution: {integrity: sha512-v+X7moGVF9k5oMVvz0slA+NgtEod+W+oygeI285MDJgSlUCW3JcqElj+cD3rlijFZtpKhC7RLkU1GuCxjGHTpA==}
+    engines: {node: '>=22.19.0'}
+    peerDependencies:
+      effect: ^4.1.0
+      redis: '>=5.0.0 <7.0.0'
 
   '@effect/platform-node@4.1.5':
     resolution: {integrity: sha512-tFnRvxF9EKc3oU17sDHj1JeLP+TL/IkaOEl3IUk2EjgMS0x7AWs0ioUXjdNKLb3Z1LdjVfMf/DxsNh9PW5FFAg==}
@@ -889,6 +902,9 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/node@24.10.1':
+    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
   '@types/node@26.6.10':
     resolution: {integrity: sha512-WJuPHoGB8WNQuTksNF7SOQpnH02PXeDYz4iueWbBT6/hTWnShY5F3T/hoJA3fY9+uYReDZ7pyTKKx83jQa7aGg==}
@@ -1897,6 +1913,9 @@ packages:
       stylelint:
         optional: true
 
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
+
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
@@ -2155,6 +2174,16 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  '@effect/platform-node@4.1.0(effect@4.1.0)(redis@6.4.0)':
+    dependencies:
+      '@effect/platform-node-shared': 4.1.5(effect@4.1.0)
+      effect: 4.1.0
+      redis: 6.4.0
+      undici: 8.13.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@effect/platform-node@4.1.5(effect@4.1.0)(redis@6.4.0)':
     dependencies:
       '@effect/platform-node-shared': 4.1.5(effect@4.1.0)
@@ -2242,15 +2271,15 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@foldkit/vite-plugin@0.29.1(effect@4.1.0)(foldkit@0.171.0(@effect/platform-browser@4.1.0(effect@4.1.0))(effect@4.1.0))(redis@6.4.0)(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))':
+  '@foldkit/vite-plugin@0.29.1(effect@4.1.0)(foldkit@0.171.0(@effect/platform-browser@4.1.0(effect@4.1.0))(effect@4.1.0))(redis@6.4.0)(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@effect/platform-node': 4.1.5(effect@4.1.0)(redis@6.4.0)
       '@effect/platform-node-shared': 4.1.5(effect@4.1.0)
       effect: 4.1.0
       foldkit: 0.171.0(@effect/platform-browser@4.1.0(effect@4.1.0))(effect@4.1.0)
       magic-string: 1.4.5
-      vite: 8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)
-      vitefu: 1.1.4(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))
+      vite: 8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)
+      vitefu: 1.1.4(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))
       ws: 8.23.0
     transitivePeerDependencies:
       - bufferutil
@@ -2591,12 +2620,12 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.3.3
       '@tailwindcss/oxide-win32-x64-msvc': 4.3.3
 
-  '@tailwindcss/vite@4.3.3(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))':
+  '@tailwindcss/vite@4.3.3(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@tailwindcss/node': 4.3.3
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
-      vite: 8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)
 
   '@tsrs/darwin-arm64@0.25.0-ts7.1.0-beta':
     optional: true
@@ -2639,6 +2668,10 @@ snapshots:
   '@types/estree@1.0.11': {}
 
   '@types/json-schema@7.0.15': {}
+
+  '@types/node@24.10.1':
+    dependencies:
+      undici-types: 7.16.0
 
   '@types/node@26.6.10':
     dependencies:
@@ -2762,14 +2795,14 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
-  '@vitest/mocker@5.0.2(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))':
+  '@vitest/mocker@5.0.2(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.2
       estree-walker: 3.0.3
       magic-string: 1.4.5
     optionalDependencies:
-      vite: 8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)
 
   '@vitest/spy@5.0.2': {}
 
@@ -3581,6 +3614,8 @@ snapshots:
       oxfmt: 0.62.0
       oxlint: 1.94.0
 
+  undici-types@7.16.0: {}
+
   undici-types@8.9.0: {}
 
   undici@8.13.1: {}
@@ -3591,7 +3626,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1):
+  vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -3599,19 +3634,19 @@ snapshots:
       rolldown: 1.2.19
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 26.6.10
+      '@types/node': 24.10.1
       fsevents: 2.3.3
       jiti: 2.7.0
       yaml: 2.9.1
 
-  vitefu@1.1.4(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)):
+  vitefu@1.1.4(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)):
     optionalDependencies:
-      vite: 8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)
 
-  vitest@5.0.2(@types/node@26.6.10)(happy-dom@20.14.5)(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)):
+  vitest@5.0.2(@types/node@24.10.1)(happy-dom@20.14.5)(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.2(vite@8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1))
+      '@vitest/mocker': 5.0.2(vite@8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1))
       chai: 6.3.0
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -3622,10 +3657,10 @@ snapshots:
       tinybench: 6.2.5
       tinyexec: 1.4.0
       tinyglobby: 0.2.17
-      vite: 8.3.1(@types/node@26.6.10)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.10.1)(jiti@2.7.0)(yaml@2.9.1)
       why-is-node-running: 3.2.3
     optionalDependencies:
-      '@types/node': 26.6.10
+      '@types/node': 24.10.1
       happy-dom: 20.14.5
     transitivePeerDependencies:
       - msw

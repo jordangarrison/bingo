@@ -39,9 +39,15 @@ const effectProperties = [
 export default defineConfig({
   extends: [cloudflareWithoutTestExemptions, core, vitest],
   options: { typeAware: false },
-  ignorePatterns: ['**/dist/**', '**/coverage/**'],
+  ignorePatterns: ['**/dist/**', '**/dist-server/**', '**/coverage/**'],
   overrides: [
     { files: ['**/*'], env: cloudflare.env },
+    {
+      files: ['src/server/**/*.ts'],
+      rules: {
+        'import/no-nodejs-modules': 'off',
+      },
+    },
     {
       files: ['**/*.{test,spec}.{ts,tsx}', '**/test/**/*.{ts,tsx}'],
       plugins: ['vitest'],
