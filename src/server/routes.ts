@@ -64,6 +64,13 @@ const serveDistFile = (pathname: string) =>
         )
       : false
 
+    // A missing file must be a 404. Sending index.html for `/foo.png` makes
+    // clients (and the iOS home screen icon fetch) cache HTML as an image.
+    // Only extensionless paths fall back to the app shell.
+    if (!isFile && path.extname(pathname).length > 0) {
+      return jsonResponse({ error: 'Not found' }, 404)
+    }
+
     const targetPath = isFile ? candidate : path.resolve(distRoot, 'index.html')
     const isImmutableAsset = isFile && pathname.startsWith('/assets/')
     const cacheControl = isImmutableAsset ? 'public, max-age=31536000, immutable' : 'no-cache'

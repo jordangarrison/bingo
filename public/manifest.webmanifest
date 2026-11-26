@@ -1,0 +1,14 @@
+{
+  "name": "Thanksgiving Bingo",
+  "short_name": "Bingo",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1b3b2b",
+  "theme_color": "#1b3b2b",
+  "icons": [
+    { "src": "/apple-touch-icon.png?v=2", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon.png?v=2", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.svg?v=2", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
