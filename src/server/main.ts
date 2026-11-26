@@ -11,6 +11,7 @@ import { AuthService } from './auth'
 import { ServerConfig } from './config'
 import { BingoRoutes } from './routes'
 import { GameStore } from './store'
+import { TelemetryLive } from './telemetry'
 
 const StartupBanner = Layer.effectDiscard(
   Effect.gen(function* logStartup() {
@@ -25,6 +26,12 @@ const StartupBanner = Layer.effectDiscard(
         ? '[bingo-auth] Room invite code: enabled (share /?join=<code>)'
         : '[bingo-auth] Room invite code: off (read-only Live Board is open)'
     )
+    yield* Effect.logInfo(
+      Option.match(config.otlpEndpoint, {
+        onNone: () => '[bingo-otel] OTLP export: disabled (set OTEL_EXPORTER_OTLP_ENDPOINT to enable)',
+        onSome: (endpoint) => `[bingo-otel] OTLP export: enabled (${config.otlpServiceName} -> ${endpoint})`,
+      })
+    )
   })
 )
 
@@ -38,9 +45,13 @@ const HttpServerLive = Layer.unwrap(
   })
 )
 
-const ServicesLive = Layer.mergeAll(GameStore.layer, AuthService.layer, StartupBanner, HttpServerLive).pipe(
-  Layer.provideMerge(ServerConfig.layer)
-)
+const ServicesLive = Layer.mergeAll(
+  TelemetryLive,
+  GameStore.layer,
+  AuthService.layer,
+  StartupBanner,
+  HttpServerLive
+).pipe(Layer.provideMerge(ServerConfig.layer))
 
 const MainLayer = HttpRouter.serve(BingoRoutes).pipe(Layer.provide(ServicesLive))
 

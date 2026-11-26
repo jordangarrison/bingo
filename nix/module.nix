@@ -81,6 +81,28 @@ in
       '';
     };
 
+    otlp = {
+      endpoint = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        example = "http://127.0.0.1:4318";
+        description = "Optional OTLP HTTP base URL for Effect traces, metrics, and logs (e.g. Maple).";
+      };
+
+      serviceName = lib.mkOption {
+        type = lib.types.str;
+        default = "bingo";
+        description = "OTEL_SERVICE_NAME resource attribute sent to OTLP.";
+      };
+
+      ingestKeyFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        example = "/var/lib/maple-secrets/ingest-key";
+        description = "Optional path to a file containing the Maple x-maple-ingest-key header value.";
+      };
+    };
+
     openFirewall = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -128,11 +150,16 @@ in
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
 
-      environment = {
-        HOST = cfg.listenAddress;
-        PORT = toString cfg.port;
-        BINGO_DB_PATH = "/var/lib/bingo/bingo.db";
-      };
+      environment =
+        {
+          HOST = cfg.listenAddress;
+          PORT = toString cfg.port;
+          BINGO_DB_PATH = "/var/lib/bingo/bingo.db";
+          OTEL_SERVICE_NAME = cfg.otlp.serviceName;
+        }
+        // lib.optionalAttrs (cfg.otlp.endpoint != null) {
+          OTEL_EXPORTER_OTLP_ENDPOINT = cfg.otlp.endpoint;
+        };
 
       script = ''
         ${lib.optionalString (cfg.callerPinFile != null) ''
@@ -143,6 +170,9 @@ in
         ''}
         ${lib.optionalString (cfg.sessionSecretFile != null) ''
           export BINGO_SESSION_SECRET="$(< "$CREDENTIALS_DIRECTORY/BINGO_SESSION_SECRET")"
+        ''}
+        ${lib.optionalString (cfg.otlp.ingestKeyFile != null) ''
+          export MAPLE_INGEST_KEY="$(< "$CREDENTIALS_DIRECTORY/MAPLE_INGEST_KEY")"
         ''}
 
         exec ${lib.getExe cfg.package}
@@ -160,7 +190,8 @@ in
         LoadCredential =
           lib.optionals (cfg.callerPinFile != null) [ "BINGO_CALLER_PIN:${cfg.callerPinFile}" ]
           ++ lib.optionals (cfg.inviteCodeFile != null) [ "BINGO_INVITE_CODE:${cfg.inviteCodeFile}" ]
-          ++ lib.optionals (cfg.sessionSecretFile != null) [ "BINGO_SESSION_SECRET:${cfg.sessionSecretFile}" ];
+          ++ lib.optionals (cfg.sessionSecretFile != null) [ "BINGO_SESSION_SECRET:${cfg.sessionSecretFile}" ]
+          ++ lib.optionals (cfg.otlp.ingestKeyFile != null) [ "MAPLE_INGEST_KEY:${cfg.otlp.ingestKeyFile}" ];
 
         EnvironmentFile = lib.mkIf (cfg.environmentFile != null) cfg.environmentFile;
 

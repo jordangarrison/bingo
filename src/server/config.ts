@@ -16,6 +16,9 @@ export interface ServerConfigData {
   readonly generatedPin: boolean
   readonly inviteCode: Option.Option<string>
   readonly sessionSecret: string
+  readonly otlpEndpoint: Option.Option<string>
+  readonly otlpServiceName: string
+  readonly mapleIngestKey: Option.Option<string>
 }
 
 const optionalNonEmpty = (name: string): Config.Config<Option.Option<string>> =>
@@ -37,6 +40,9 @@ export class ServerConfig extends Context.Service<ServerConfig, ServerConfigData
       const configuredPin = yield* optionalNonEmpty('BINGO_CALLER_PIN')
       const inviteCode = yield* optionalNonEmpty('BINGO_INVITE_CODE')
       const configuredSecret = yield* optionalNonEmpty('BINGO_SESSION_SECRET')
+      const otlpEndpoint = yield* optionalNonEmpty('OTEL_EXPORTER_OTLP_ENDPOINT')
+      const otlpServiceName = yield* Config.String('OTEL_SERVICE_NAME').pipe(Config.withDefault('bingo'))
+      const mapleIngestKey = yield* optionalNonEmpty('MAPLE_INGEST_KEY')
 
       const generatedPin = Option.isNone(configuredPin)
       const fallbackPin = yield* Random.nextIntBetween(100_000, 999_999)
@@ -52,6 +58,9 @@ export class ServerConfig extends Context.Service<ServerConfig, ServerConfigData
         generatedPin,
         inviteCode,
         sessionSecret,
+        otlpEndpoint,
+        otlpServiceName,
+        mapleIngestKey,
       }
     }
   )

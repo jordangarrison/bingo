@@ -19,6 +19,9 @@ const makeTestLayer = (overrides: { readonly callerPin: string; readonly inviteC
         generatedPin: false,
         inviteCode: overrides.inviteCode === undefined ? Option.none() : Option.some(overrides.inviteCode),
         sessionSecret: 'test-session-secret',
+        otlpEndpoint: Option.none(),
+        otlpServiceName: 'bingo-test',
+        mapleIngestKey: Option.none(),
       })
     )
   )
