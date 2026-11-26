@@ -186,6 +186,10 @@ in
         RuntimeDirectory = "bingo";
         Restart = "on-failure";
         RestartSec = 5;
+        # Effect's NodeRuntime exits with 130 when SIGTERM interrupts it.
+        # That is a clean stop, not a failure.
+        SuccessExitStatus = "130";
+        TimeoutStopSec = "15s";
 
         LoadCredential =
           lib.optionals (cfg.callerPinFile != null) [ "BINGO_CALLER_PIN:${cfg.callerPinFile}" ]

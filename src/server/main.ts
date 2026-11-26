@@ -2,6 +2,7 @@ import { createServer } from 'node:http'
 
 import * as NodeHttpServer from '@effect/platform-node/NodeHttpServer'
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime'
+import * as Duration from 'effect/Duration'
 import * as Effect from 'effect/Effect'
 import * as HttpRouter from 'effect/http/HttpRouter'
 import * as Layer from 'effect/Layer'
@@ -16,11 +17,14 @@ import { TelemetryLive } from './telemetry'
 const StartupBanner = Layer.effectDiscard(
   Effect.gen(function* logStartup() {
     const config = yield* ServerConfig
-    const pinSource = config.generatedPin
-      ? 'auto-generated (set BINGO_CALLER_PIN to customize)'
-      : 'from BINGO_CALLER_PIN'
     yield* Effect.logInfo(`[bingo] listening on http://${config.host}:${config.port} (db: ${config.dbPath})`)
-    yield* Effect.logInfo(`[bingo-auth] Caller PIN: ${config.callerPin} (${pinSource})`)
+    // Never log a configured PIN: logs go to the journal and to OTLP.
+    // A generated PIN is printed once, because there is no other way to learn it.
+    yield* Effect.logInfo(
+      config.generatedPin
+        ? `[bingo-auth] Caller PIN: ${config.callerPin} (auto-generated; set BINGO_CALLER_PIN to choose one)`
+        : '[bingo-auth] Caller PIN: configured from BINGO_CALLER_PIN'
+    )
     yield* Effect.logInfo(
       Option.isSome(config.inviteCode)
         ? '[bingo-auth] Room invite code: enabled (share /?join=<code>)'
@@ -41,6 +45,9 @@ const HttpServerLive = Layer.unwrap(
     return NodeHttpServer.layer(() => createServer({ requestTimeout: 0 }), {
       host: config.host,
       port: config.port,
+      // Live SSE streams never end on their own. Cap the wait so a stop
+      // does not hang until systemd sends SIGKILL.
+      gracefulShutdownTimeout: Duration.seconds(3),
     })
   })
 )
